@@ -1,0 +1,43 @@
+<html>
+  <head>
+    <title>Mod1</title>
+    <meta http-equiv="refresh" content="2">
+    <script type="text/javascript"
+    src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+    <script type="text/javascript">
+    var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+    var intervalID = setInterval(update_values,1000);
+
+    function update_values() {
+        $.getJSON($SCRIPT_ROOT + '/start',
+               
+      function(data) {
+        $('#result').text(data.result);
+        console.log(data)
+      });
+      
+    };
+
+    
+    </script>
+    <style>
+	img {
+  	display: block;
+  	margin-left: auto;
+  	margin-right: auto;
+	width: 35%
+	}
+    </style>
+  </head>
+  <body>
+    <span id="result">?</span>
+    <script>
+    document.getElementById("result").innerHTML;
+    </script>
+    <h1 align="center" style="float: left;">Video Streaming Demonistration{{t}}</h1>
+    <img id="bg" class="center" src="{{ url_for('video_feed') }}">
+  
+  
+    <img src="{{ url }}" alt="Img">
+  </body>
+</html>
