@@ -1,24 +1,37 @@
 <html>
   <head>
     <title>Mod1</title>
-    <meta http-equiv="refresh" content="2">
     <script type="text/javascript"
     src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
     <script type="text/javascript">
-    var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+    var Value;
     var intervalID = setInterval(update_values,1000);
-
-    function update_values() {
-        $.getJSON($SCRIPT_ROOT + '/start',
-               
-      function(data) {
-        $('#result').text(data.result);
-        console.log(data)
-      });
-      
+                $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+                function update_values() {
+                        $.getJSON($SCRIPT_ROOT + '/_stuff',        
+                    function(data) {
+                        $('#result').text(data.result);
+                        Value = data;
+                        console.log(data)
+                    });
+                    };
+    var intervalID2 = setInterval(update_photos,1000);
+                $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+                function update_photos() {
+                        $.getJSON($SCRIPT_ROOT + '/start',        
+                    function(imgs) {
+                        $('#imgas').text(imgs.imgas);
+                        console.log(imgs)
+                    });
+                    };
+    var intv = setInterval(update_imgs,1000);                
+    function update_imgs(){
+      if(Value>10){
+                    $("#imgs").attr("src","static/people_photo/3.png");    }
+                    else{
+                      $("#imgs").attr("src","static/people_photo/1.png");
+                    }            
     };
-
-    
     </script>
     <style>
 	img {
@@ -31,13 +44,16 @@
   </head>
   <body>
     <span id="result">?</span>
+    <div >
+      <img id='imgs' src= ""  alt="Img">
+      <div>
     <script>
     document.getElementById("result").innerHTML;
+    document.getElementById('imgs').innerHTML;
     </script>
     <h1 align="center" style="float: left;">Video Streaming Demonistration{{t}}</h1>
     <img id="bg" class="center" src="{{ url_for('video_feed') }}">
   
-  
-    <img src="{{ url }}" alt="Img">
+    
   </body>
 </html>

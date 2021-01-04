@@ -11,20 +11,20 @@ app.config['UPLOAD_FOLDER'] = PEOPLE_FOLDER
 
 @app.route('/')
 def index():
-    print(values)
+    # print(values)
     return render_template('index.html')
 
 
 def gen(camera):
     while True:
+        global values
         frame = camera.get_frame()
         values = camera.get_value()
-        print(values)
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
 @app.route('/_stuff', methods = ['GET'])
 def stuff():
-    # print(values)  
+    global values
     return jsonify(result=values)
 
 @app.route('/start',methods=['GET'])
@@ -34,7 +34,15 @@ def show_index():
         full_filename = os.path.join(app.config['UPLOAD_FOLDER'],"1.png")
     elif values<3:
         full_filename = os.path.join(app.config['UPLOAD_FOLDER'],"3.png")    
-    return render_template("index.html",url=full_filename)
+    return jsonify(url=full_filename)
+
+@app.route('/xrt')
+def xrt_1():
+    if values>3:
+        full_filename = os.path.join(app.config['UPLOAD_FOLDER'],"1.png")
+    elif values<3:
+        full_filename = os.path.join(app.config['UPLOAD_FOLDER'],"3.png")
+    return render_template('index.html',url1=full_filename)
 
 @app.route('/video_feed')
 def video_feed():
